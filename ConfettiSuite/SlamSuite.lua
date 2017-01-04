@@ -36,7 +36,7 @@ end
 function Confetti_Show(amount)
   ConfettiArt:Show()
   --ConfettiArt:SetScript("OnUpdate", onUpdate)
-  ConfettiArt_Text:SetText("Shield Slam Hitted for "..amount.." m.")
+  ConfettiArt_Text:SetText("Shield Slam Hit for "..amount.." m.")
   PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\airhorn.mp3")
   C_Timer.After(2.5, function() ConfettiArt:Hide() end)
 end
