@@ -9,5 +9,5 @@ To install place the ConfettiSuite folder inside
 The Confetti Suite shows tasteful confetti when a shield slams hits for over a million.
 
 ![Mxszdfs](http://i.imgur.com/Mxszdfs.jpg)
-
+<!-- http://imgur.com/a/KI4gh -->
 Contact me on Discord Deathwish#0261
