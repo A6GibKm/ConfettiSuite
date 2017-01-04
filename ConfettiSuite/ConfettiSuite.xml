@@ -1,0 +1,44 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+  <Frame name="ConfettiArt" parent="UIParent">
+    <Size>
+      <RelDimension x="0.9" y="0.9"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER"
+      relativeTo="UIParent" />
+    </Anchors>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture file="Interface\AddOns\ConfettiSuite\confetti.tga">
+          <Anchors>
+            <Anchor point= "CENTER" />
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="BORDER">
+        <FontString name="ConfettiArt_Text"
+          outline="THICK" inherits="GameFontNormal" >
+
+          <!-- <FontHeight>
+            <AbsValue val="12"/>
+          </FontHeight> -->
+          <Anchors>
+            <Anchor point= "BOTTOM" relativePoint="Center" relativeTo="UIParent" />
+            <Offset>
+              <AbsDimension x="100" y="100"/>
+            </Offset>
+          </Anchors>
+        </FontString>
+      </Layer>
+    </Layers>
+
+    <Scripts>
+      <OnLoad function="Confetti_OnLoad" />
+    </Scripts>
+
+  </Frame>
+
+</Ui>

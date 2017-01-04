@@ -1,0 +1,10 @@
+## Interface: 70100
+## Title: The Confetti Suite
+## Author: Deathwish
+## Version: 1.0
+## Notes: This addon highlights when a Shield Slam hits for more than 1 m with tasteful confetti
+
+SlamSuite.lua
+airhorn.mp3
+confetti.tga
+ConfettiSuite.xml
