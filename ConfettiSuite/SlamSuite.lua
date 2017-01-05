@@ -1,6 +1,6 @@
 Confetti = {}
 
-threshold = 10^6
+Confetti.threshold = 10^6
 
 if not MyCombatFrame then
   CreateFrame("Frame", "MyCombatFrame", UIParent)
@@ -47,7 +47,7 @@ function MyCombatFrame_OnEvent(self, event, ...)
     if type == "SPELL_DAMAGE" then
       local spellId, spellName, spellSchool = select(12, ...)
       local amount, overkill, school, resisted, blocked, absorbed, critical, glancing, crushing = select(15, ...)
-      if (spellName=="Shield Slam") and (amount >  threshold ) then
+      if (spellName=="Shield Slam") and (amount >  Confetti.threshold ) then
         amount = comma_value(round(amount / 1000000 , 2))
         --DEFAULT_CHAT_FRAME:AddMessage("Shield Slam Just Hitted for "..amount.." m.")
       Confetti_Show(amount)

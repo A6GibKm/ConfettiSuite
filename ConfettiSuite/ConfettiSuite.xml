@@ -4,7 +4,7 @@
 
   <Frame name="ConfettiArt" parent="UIParent">
     <Size>
-      <RelDimension x="0.9" y="0.9"/>
+      <RelDimension x="1" y="1"/>
     </Size>
     <Anchors>
       <Anchor point="CENTER" relativePoint="CENTER"
@@ -21,15 +21,8 @@
       <Layer level="BORDER">
         <FontString name="ConfettiArt_Text"
           outline="THICK" inherits="GameFontNormal" >
-
-          <!-- <FontHeight>
-            <AbsValue val="12"/>
-          </FontHeight> -->
           <Anchors>
             <Anchor point= "BOTTOM" relativePoint="Center" relativeTo="UIParent" />
-            <Offset>
-              <AbsDimension x="100" y="100"/>
-            </Offset>
           </Anchors>
         </FontString>
       </Layer>
