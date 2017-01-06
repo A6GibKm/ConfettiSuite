@@ -1,0 +1,79 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+ <Script file="Confetti.lua"/>
+
+ <Frame name="Confetti_ConfigFrame"
+    toplevel="true" parent="UIParent" frameStrata="DIALOG"
+    hidden="true" enableMouse="true">
+
+	<Size><AbsDimension x="260" y="280"/></Size>
+	<Anchors><Anchor point="CENTER"/></Anchors>
+
+	<Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+		edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+		<BackgroundInsets>
+			<AbsInset left="11" right="12" top="12" bottom="11"/>
+		</BackgroundInsets>
+		<TileSize><AbsValue val="32"/></TileSize>
+		<EdgeSize><AbsValue val="32"/></EdgeSize>
+	</Backdrop>
+
+  <Frames>
+
+		<Button name="$parentButtonClose" inherits="OptionsButtonTemplate" text="Close">
+			<Anchors>
+				<Anchor point="BOTTOMRIGHT">
+				<Offset><AbsDimension x="-12" y="16"/></Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> Confetti_ConfigFrame:Hide(); </OnClick>
+			</Scripts>
+		</Button>
+
+    <Button name="$parentButtonToDefault" inherits="OptionsButtonTemplate" text="Defaults">
+			<Anchors>
+				<Anchor point="BOTTOMLEFT">
+				<Offset><AbsDimension x="13" y="16"/></Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnClick> Confetti.VaiablesSetToDefault(); </OnClick>
+			</Scripts>
+		</Button>
+
+    <CheckButton name="EnabledButton" inherits="OptionsCheckButtonTemplate" >
+			<Anchors>
+				<Anchor point="TOPLEFT" relativeTo="$parent">
+				<Offset><AbsDimension x="20" y="-30"/></Offset>
+				</Anchor>
+			</Anchors>
+			<Scripts>
+				<OnLoad> EnabledButtonText:SetText("Enabled"); </OnLoad>
+				<OnClick> ConfettiConfig_OnClick(); </OnClick>
+			</Scripts>
+		</CheckButton>
+
+    <!-- <CheckButton name="$parentCheckButtonOn" inherits="OptionsCheckButtonTemplate">
+      <Anchors>
+        <Anchor point="TOPLEFT" relativeTo="$parentCheckButtonOn">
+        <Offset><AbsDimension x="20" y="-30"/></Offset>
+        </Anchor>
+      </Anchors>
+      <Scripts>
+        <OnLoad> getglobal(this:GetName().."Text"):SetText("test"); </OnLoad>
+        <OnClick> ConfettiConfig_OnClick(); </OnClick>
+      </Scripts>
+    </CheckButton> -->
+
+	</Frames>
+
+  <Scripts>
+	 	<OnShow> ConfettiConfig_OnShow(); </OnShow>
+	</Scripts>
+
+ </Frame>
+
+</Ui>
