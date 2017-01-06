@@ -2,11 +2,14 @@
 
 The Ultimate confetti suite for prot warriors.
 
+The Confetti Suite shows tasteful confetti when a shield slams hits for over a million.
+
 ### Installation
 To install place the ConfettiSuite folder inside 
 `..."WoW Directory"\Interface\AddOns\"PLACE IT HERE"`
 
-The Confetti Suite shows tasteful confetti when a shield slams hits for over a million.
+### Usage
+Use /confetti to open the configuration window (work in progress)
 
 ![Mxszdfs](http://i.imgur.com/Mxszdfs.jpg)
 <!-- http://imgur.com/a/KI4gh -->
