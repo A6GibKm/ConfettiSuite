@@ -9,7 +9,7 @@ To install place the ConfettiSuite folder inside
 `..."WoW Directory"\Interface\AddOns\"PLACE IT HERE"`
 
 ### Usage
-Use /confetti to open the configuration window (work in progress)
+Type `/confetti` to open the configuration window (work in progress)
 
 ![Mxszdfs](http://i.imgur.com/Mxszdfs.jpg)
 <!-- http://imgur.com/a/KI4gh -->
