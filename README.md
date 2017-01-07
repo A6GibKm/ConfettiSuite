@@ -11,6 +11,6 @@ To install place the ConfettiSuite folder inside
 ### Usage
 Type `/confetti` to open the configuration window (work in progress)
 
-![Mxszdfs](http://i.imgur.com/Mxszdfs.jpg)
-<!-- http://imgur.com/a/KI4gh -->
+![Sample](http://i.imgur.com/qZIiyOm.jpg)
+<!-- http://imgur.com/a/MUtRs -->
 Contact me on Discord Deathwish#0261
