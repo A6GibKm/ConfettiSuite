@@ -14,7 +14,7 @@
       <Layer level="BACKGROUND">
         <Texture file="Interface\AddOns\ConfettiSuite\confetti.tga">
           <Anchors>
-            <Anchor point= "CENTER" />
+            <Anchor point= "CENTER" relativePoint="CENTER" relativeTo="UIParent" />
           </Anchors>
         </Texture>
       </Layer>
