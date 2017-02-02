@@ -7,6 +7,7 @@ The Confetti Suite shows tasteful confetti when a shield slams hits for over a m
 ### New aditions
 
 Added an option to show % of meele hits blocked after combat,
+
 Added an option to show spell reflected abilities.
 
 ### Installation
