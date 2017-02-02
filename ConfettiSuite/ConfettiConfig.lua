@@ -18,7 +18,7 @@ ConfettiCfg.VariablesLoaded = function()
   	 	ConfettiVariables = {
         ["on"] = true,
         ["test"] = true,
-        ["Threshold"] = 9*10^5,
+        ["Threshold"] = 10^6,
         ["SREnabled"] = true,
         ["SBEnabled"] = true
       };
