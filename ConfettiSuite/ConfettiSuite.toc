@@ -3,11 +3,11 @@
 ## Author: Deathwish
 ## Version: 1.0
 ## Notes: This addon highlights when a Shield Slam hits for more than 1 m with tasteful confetti
-## SavedVariables: Confetti_SavedVariables
+## SavedVariables: ConfettiVariables
 
 Confetti.lua
 ConfettiConfig.lua
-airhorn.mp3
-confetti.tga
+Airhorn.mp3
+Confetti.tga
 ConfettiSuite.xml
 ConfettiConfig.xml

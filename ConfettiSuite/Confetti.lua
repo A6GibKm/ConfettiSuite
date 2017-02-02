@@ -1,128 +1,132 @@
-if not Confetti then Confetti = {} end
+Confetti = {}
 
-Confetti.threshold = 10^6
+local _, _, classIndex = UnitClass("player")
 
-local _,_,classIndex = UnitClass("player")
-
-if not classIndex == 1 then
-  Confetti_MainFrame:Hide();
+if not ( classIndex == 1 ) then
+  return;
 end
 
 function Confetti.Test()
-  Confetti.threshold = 10^5;
+  ConfettiVariables.Threshold = 10^5;
   print ("threshold set to 100.000");
 end
 
-if not Confetti_MainFrame then
-  CreateFrame("Frame", "Confetti_MainFrame", UIParent);
+if not ConfettiFrame then
+  ConfettiFrame = CreateFrame("Frame", "ConfettiFrame", UIParent);
 end
 
-Confetti_MainFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+function Confetti.FormatNumber(amount,bolean)
+  if bolean then
+    local amountBeforeComma = math.floor(amount/ 10^6);
+    local amountAfterComma = math.floor( (amount % 10^6)/10^4);
+    return amountBeforeComma.."."..amountAfterComma;
+  end
 
--- functions
-
-function Confetti.FormatNumber(amount)
-  local amountBeforeComma = math.floor(amount/ 10^6);
-  local amountAfterComma = math.floor( (amount % 10^6)/10^4  );
-  return amountBeforeComma.."."..amountAfterComma;
+  local formatted = amount
+    while true do
+      formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+      if (k==0) then
+        break
+      end
+    end
+  return formatted
 end
 
-function Confetti_Show(amount)
-  amount = Confetti.FormatNumber(amount);
-  Confetti_ArtFrame_Text:SetText("Shield Slam Hit for "..amount.." m !");
-  Confetti_ArtFrame:Show();
-  C_Timer.After(2.5, function() Confetti_ArtFrame:Hide() end);
-end
-
-function Confetti_ArtFrame_OnShow()
+Confetti.OnShow = function()
   PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\airhorn.mp3");
 end
 
-function Confetti_MainFrame_OnEvent(self, event, ...)
-  local _, type, _ , _ ,sourceName , _ ,_ ,_ ,_ ,_ ,_ ,_ ,spellName ,_ ,amount  = ...
-  if event == "COMBAT_LOG_EVENT_UNFILTERED"
-  and type == "SPELL_DAMAGE"
-  and sourceName == UnitName("player")
-  and spellName=="Shield Slam"
-  and amount >=  Confetti.threshold  then
-      Confetti_Show(amount);
+Confetti.OnEvent = function(self, event, ...)
+
+  if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+
+    local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
+
+    if type == "SPELL_MISSED" and destGUID == UnitGUID("player") then
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, misstype = ...
+
+      if misstype == "REFLECT" then
+        Confetti.spellId = spellId
+        Confetti.sourceGUID = sourceGUID
+      end
+
+    elseif type == "SPELL_DAMAGE" then
+
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount = ...
+
+      --Show confetti
+      if (sourceName == UnitName("player") and spellName=="Shield Slam") and amount >=  ConfettiVariables.Threshold then
+
+        ConfettiArt:Hide();
+        amount = Confetti.FormatNumber(amount,true);
+        ConfettiText:SetText("Shield Slam Hit for "..amount.." m !");
+        ConfettiArt:Show();
+        C_Timer.After(2.5, function() ConfettiArt:Hide() end);
+
+      end
+
+      if Confetti.spellId then
+        if (sourceGUID == Confetti.sourceGUID and destGUID == Confetti.sourceGUID) and spellId == Confetti.spellId then
+
+          ConfettiSR:Hide();
+          _, _, icon ,_  = GetSpellInfo(spellId);
+
+          ConfettiSRIcon:SetTexture(icon);
+          ConfettiSRText:SetText("Reflect: "..spellName.." for "..Confetti.FormatNumber(amount)..".");
+          ConfettiSR:Show();
+
+          C_Timer.After(2.5, function() ConfettiSR:Hide() end);
+
+          Confetti.TotalDmg = Confetti.TotalDmg + amount
+          Confetti.spellId = nil
+          Confetti.sourceGUID = nil
+
+        end
+      end
+
+    elseif type == "SWING_DAMAGE" and destGUID == UnitGUID("player") then
+
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, _, _, school, _, blocked = ...
+
+      if Confetti.TotalHits then
+        Confetti.TotalHits = Confetti.TotalHits + 1
+
+        if blocked then
+          Confetti.Blocked = Confetti.Blocked + 1
+        end
+
+      end
+
+    end
+
+  elseif event == "PLAYER_REGEN_DISABLED" then
+    Confetti.TotalDmg = 0
+    Confetti.Blocked = 0
+    Confetti.TotalHits = 0
+
+  elseif event == "PLAYER_REGEN_ENABLED" then
+    if Confetti.TotalDmg then
+      if Confetti.TotalDmg ~= 0 then
+        print("|cff33ff99Confetti Suite: |rReflected "..Confetti.FormatNumber(Confetti.TotalDmg).." Damage.")
+      end
+    end
+
+    if (Confetti.Blocked and Confetti.TotalHits) then
+      if Confetti.TotalHits > 1 then
+        local eblock = math.floor(100* Confetti.Blocked / Confetti.TotalHits)
+        print("|cff33ff99Confetti Suite: |rBlocked "..eblock.."% of melee hits.")
+      end
+    end
+
+  elseif ( event == "VARIABLES_LOADED" ) then
+    ConfettiCfg.VariablesLoaded();
   end
 
-  -- config part
-  if ( event == "VARIABLES_LOADED" ) then
-		Confetti.VariablesLoaded();
-	end
 end
 
-Confetti_MainFrame:SetScript("OnEvent", Confetti_MainFrame_OnEvent);
+ConfettiFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
+ConfettiFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+ConfettiFrame:RegisterEvent("PLAYER_REGEN_DISABLED");
+ConfettiFrame:RegisterEvent("VARIABLES_LOADED");
 
--- CONFIG
-
-Confetti_MainFrame:SetScript("OnLoad", ConfettiConfig_OnLoad);
-Confetti_MainFrame:RegisterEvent("VARIABLES_LOADED");
-
-Confetti.IsConfigLoaded = false
-
---slash commands
-SLASH_CONF1 = "/confetti"
-SLASH_CONF2 = "/cft"
-SlashCmdList["CONF"] = function() Confetti_ConfigFrame:Show() end
-
-function Confetti.VariablesLoaded()
-  if ( not Confetti_SavedVariables ) then
-  	 	Confetti_SavedVariables = { ["on"] = true , ["test"] = true };
-  end
-  -- if ( not Confetti_SavedVariables["test"] ) then
-  -- 	 	Confetti_SavedVariables["test"] = true;
-  -- end
-  -- if ( not Confetti_SavedVariables["on"] ) then
-  -- 	 	Confetti_SavedVariables["on"] = true;
-  -- end
-  Confetti.IsConfigLoaded = true
-  Confetti.ConfigChange()
-end
-
-function Confetti.ConfigChange()
-  if not Confetti.IsConfigLoaded then
-    return;
-  end
-  if Confetti_SavedVariables.on == true then
-    Confetti_MainFrame:Show();
-  else
-    Confetti_MainFrame:Hide();
-  end
-end
-
-function Confetti.VaiablesSetToDefault()
-	if ( not Confetti.IsConfigLoaded  ) then
-		return;
-	end
-	Confetti_SavedVariables.on = true;
-	Confetti_SavedVariables.test = true;
-  print("Set to default");
-	Confetti.ConfigChange();
-end
-
-function ConfettiConfig_OnClick()
-  if ( not Confetti.IsConfigLoaded ) then
-		return;
-	end
-  Confetti_SavedVariables.on = EnabledButton:GetChecked(); -- set profile
-  if EnabledButton:GetChecked() then
-    print("The Confetti is Enabled.")
-  else
-    print("The Confetti is Disabled. Sad.")
-  end
-  Confetti.ConfigChange();
-end
-
-function ConfettiConfig_OnLoad()
-  Confetti_ConfigFrame:RegisterEvent("VARIABLES_LOADED");
-end
-
-function ConfettiConfig_OnShow()
-	if ( not Confetti.IsConfigLoaded ) then
-		return;
-	end
-  EnabledButton:SetChecked(Confetti_SavedVariables.on);
-end
+ConfettiFrame:SetScript("OnEvent", Confetti.OnEvent);
