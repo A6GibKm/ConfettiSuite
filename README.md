@@ -17,7 +17,7 @@ To install place the ConfettiSuite folder inside
 
 ### Usage
 
-Type `/confetti` to open the configuration window (work in progress)
+Type `/confetti` or `/cft` to open the configuration window (work in progress)
 
 ![Sample](http://i.imgur.com/qZIiyOm.jpg)
 <!-- http://imgur.com/a/MUtRs -->
