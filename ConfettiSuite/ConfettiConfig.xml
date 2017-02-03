@@ -115,9 +115,8 @@
     </Layer>
   </Layers>
 
-
     <Scripts>
-      <OnShow> ConfettiCfg.ConfigOnShow(); </OnShow>
+      <OnShow function= "ConfettiCfgConfigOnShow" />
     </Scripts>
 
   </Frame>

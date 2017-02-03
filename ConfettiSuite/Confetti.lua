@@ -1,15 +1,13 @@
-Confetti = {}
-
 local _, _, classIndex = UnitClass("player")
 
 if not ( classIndex == 1 ) then
   return;
 end
 
-function Confetti.Test()
-  ConfettiVariables.Threshold = 10^5;
-  print ("threshold set to 100.000");
-end
+Confetti = {}
+
+Confetti.AddonString = "|cff33ff99Confetti Suite: |r"
+
 
 if not ConfettiFrame then
   ConfettiFrame = CreateFrame("Frame", "ConfettiFrame", UIParent);
@@ -32,8 +30,11 @@ function Confetti.FormatNumber(amount,bolean)
   return formatted
 end
 
-Confetti.OnShow = function()
-  PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\airhorn.mp3");
+ConfettiOnShow = function(self)
+  if self:GetName() == "ConfettiArt" then
+    PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\airhorn.mp3");
+  end
+  C_Timer.After(2.5, function() getglobal(self:GetName()):Hide() end);
 end
 
 Confetti.OnEvent = function(self, event, ...)
@@ -61,11 +62,10 @@ Confetti.OnEvent = function(self, event, ...)
         amount = Confetti.FormatNumber(amount,true);
         ConfettiText:SetText("Shield Slam Hit for "..amount.." m !");
         ConfettiArt:Show();
-        C_Timer.After(2.5, function() ConfettiArt:Hide() end);
 
       end
 
-      if Confetti.spellId then
+      if Confetti.spellId and ConfettiVariables.SREnabled then
         if (sourceGUID == Confetti.sourceGUID and destGUID == Confetti.sourceGUID) and spellId == Confetti.spellId then
 
           ConfettiSR:Hide();
@@ -75,7 +75,7 @@ Confetti.OnEvent = function(self, event, ...)
           ConfettiSRText:SetText("Reflect: "..spellName.." for "..Confetti.FormatNumber(amount)..".");
           ConfettiSR:Show();
 
-          C_Timer.After(2.5, function() ConfettiSR:Hide() end);
+          --C_Timer.After(2.5, function() ConfettiSR:Hide() end);
 
           Confetti.TotalDmg = Confetti.TotalDmg + amount
           Confetti.spellId = nil
@@ -84,9 +84,19 @@ Confetti.OnEvent = function(self, event, ...)
         end
       end
 
-    elseif type == "SWING_DAMAGE" and destGUID == UnitGUID("player") then
+    elseif type == "SWING_MISSED" then
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, missType, isOffHand, amountMissed = ...
 
-      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, _, _, school, _, blocked = ...
+      if missType == "ABSORB" then
+        Confetti.TotalHits = Confetti.TotalHits + 1
+        if UnitBuff("player", "Shield Block") or UnitBuff("player", "Neltharion's Fury") then
+          Confetti.Blocked = Confetti.Blocked + 1
+        end
+      end
+
+    elseif type == "SWING_DAMAGE" and destName == UnitName("player") then
+
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, _, school, _, blocked, absorbed, critical, glancing, crushing, isOffHand = ...
 
       if Confetti.TotalHits then
         Confetti.TotalHits = Confetti.TotalHits + 1
@@ -107,14 +117,14 @@ Confetti.OnEvent = function(self, event, ...)
   elseif event == "PLAYER_REGEN_ENABLED" then
     if Confetti.TotalDmg then
       if Confetti.TotalDmg ~= 0 then
-        print("|cff33ff99Confetti Suite: |rReflected "..Confetti.FormatNumber(Confetti.TotalDmg).." Damage.")
+        print(Confetti.AddonString.."Reflected "..Confetti.FormatNumber(Confetti.TotalDmg).." Damage.")
       end
     end
 
     if (Confetti.Blocked and Confetti.TotalHits) then
-      if Confetti.TotalHits > 1 then
-        local eblock = math.floor(100* Confetti.Blocked / Confetti.TotalHits)
-        print("|cff33ff99Confetti Suite: |rBlocked "..eblock.."% of melee hits.")
+      if Confetti.TotalHits > 1 and ConfettiVariables.SBEnabled then
+        local eblock = math.floor(1000 * Confetti.Blocked/ Confetti.TotalHits)/10
+        print(Confetti.AddonString.."Blocked "..eblock.."% of melee hits.")
       end
     end
 

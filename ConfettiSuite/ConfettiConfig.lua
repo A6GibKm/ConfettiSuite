@@ -1,3 +1,10 @@
+local _, _, classIndex = UnitClass("player")
+
+if not ( classIndex == 1 ) then
+  return;
+end
+
+
 ConfettiCfg = {}
 
 ConfettiCfg.IsConfigLoaded = false
@@ -9,7 +16,6 @@ end
 SLASH_CONF1 = "/confetti"
 SLASH_CONF2 = "/cft"
 SlashCmdList["CONF"] = function()
-  print("|cff33ff99Confetti Suite: |rConfig Loaded")
   ConfettiConfigWindow:Show();
 end
 
@@ -46,15 +52,20 @@ ConfettiCfg.VaiablesSetToDefault = function()
 	if ( not ConfettiCfg.IsConfigLoaded  ) then
 		return;
 	end
-	ConfettiVariables.on = true;
-	ConfettiVariables.test = true;
-  print("|cff33ff99Confetti Suite: |rSet to default");
+  ConfettiVariables = {
+    ["on"] = true,
+    ["test"] = true,
+    ["Threshold"] = 10^6,
+    ["SREnabled"] = true,
+    ["SBEnabled"] = true
+  };
+  print(Confetti.AddonString.."Set to default");
 	ConfettiCfg.ConfigChange();
 end
 
 ConfettiCfg.ConfigThreshold = function(text)
   ConfettiVariables.Threshold = text:GetNumber();
-  print("|cff33ff99Confetti Suite: |rConfetti will be shown for SS hits over "..Confetti.FormatNumber(text:GetNumber()))
+  print(Confetti.AddonString.."Confetti will be shown for SS hits over "..Confetti.FormatNumber(text:GetNumber()))
   ConfettiCfg.ConfigChange();
 end
 
@@ -69,37 +80,38 @@ ConfettiCfg.ConfigOnClick = function(button)
     ConfettiVariables.on = button:GetChecked();
 
     if button:GetChecked() then
-      print("|cff33ff99Confetti Suite: |rThe Confetti is Enabled.")
+      print(Confetti.AddonString.."The Confetti is Enabled.")
     else
-      print("|cff33ff99Confetti Suite: |rThe Confetti is Disabled. Sad.")
+      print(Confetti.AddonString.."The Confetti is Disabled. Sad.")
     end
 
   elseif ( button:GetName() == (button:GetParent():GetName().."SREnabledButton" ) ) then
     ConfettiVariables.SREnabled = button:GetChecked();
 
     if button:GetChecked() then
-      print("|cff33ff99Confetti Suite: |rThe Spell Reflect Module is Enabled.")
+      print(Confetti.AddonString.."The Spell Reflect Module is Enabled.")
     else
-      print("|cff33ff99Confetti Suite: |rThe Spell Reflect Module is Disabled. Sad.")
+      print(Confetti.AddonString.."The Spell Reflect Module is Disabled. Sad.")
     end
 
   elseif ( button:GetName() == (button:GetParent():GetName().."SBEnabledButton" ) ) then
     ConfettiVariables.SBEnabled = button:GetChecked();
 
     if button:GetChecked() then
-      print("|cff33ff99Confetti Suite: |rThe Shield Block Module is Enabled.")
+      print(Confetti.AddonString.."The Shield Block Module is Enabled.")
     else
-      print("|cff33ff99Confetti Suite: |rThe Shield Block Module is Disabled. Sad.")
+      print(Confetti.AddonString.."The Shield Block Module is Disabled. Sad.")
     end
 
   end
   ConfettiCfg.ConfigChange();
 end
 
-ConfettiCfg.ConfigOnShow = function()
+ConfettiCfgConfigOnShow = function(self)
 	if ( not ConfettiCfg.IsConfigLoaded ) then
 		return;
 	end
+  print(Confetti.AddonString.."Config Loaded")
   ConfettiConfigWindowEnabledButton:SetChecked(ConfettiVariables.on);
   ConfettiConfigWindowSREnabledButton:SetChecked(ConfettiVariables.SREnabled);
   ConfettiConfigWindowSBEnabledButton:SetChecked(ConfettiVariables.SBEnabled);

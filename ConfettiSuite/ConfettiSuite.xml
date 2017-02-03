@@ -38,6 +38,10 @@
 
     </Layers>
 
+    <Scripts>
+      <OnShow function="ConfettiOnShow"/>
+    </Scripts>
+
   </Frame>
 
   <Frame name="ConfettiSR" parent="UIParent" hidden="true" frameStrata="BACKGROUND">
@@ -78,7 +82,7 @@
     </Layers>
 
     <Scripts>
-      <OnShow function="Confetti_ArtFrame_OnShow"/>
+      <OnShow function="ConfettiOnShow"/>
     </Scripts>
 
   </Frame>
