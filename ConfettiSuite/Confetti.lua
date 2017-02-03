@@ -13,6 +13,10 @@ if not ConfettiFrame then
   ConfettiFrame = CreateFrame("Frame", "ConfettiFrame", UIParent);
 end
 
+if not ConfettiSRFrame then
+  ConfettiSRFrame = CreateFrame("Frame", "ConfettiSRFrame", UIParent);
+end
+
 function Confetti.FormatNumber(amount,bolean)
   if bolean then
     local amountBeforeComma = math.floor(amount/ 10^6);
@@ -31,10 +35,23 @@ function Confetti.FormatNumber(amount,bolean)
 end
 
 ConfettiOnShow = function(self)
+
+  self.TimeSinceLastUpdate = 0
+
   if self:GetName() == "ConfettiArt" then
-    PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\airhorn.mp3");
+    PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\Media\\Airhorn.mp3");
   end
-  C_Timer.After(2.5, function() getglobal(self:GetName()):Hide() end);
+
+end
+
+function ConfettiOnUpdate(self, elapsed)
+
+  self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
+
+  if (self.TimeSinceLastUpdate > 2.5) then
+    self:Hide();
+    self.TimeSinceLastUpdate = 0;
+  end
 end
 
 Confetti.OnEvent = function(self, event, ...)
@@ -65,17 +82,14 @@ Confetti.OnEvent = function(self, event, ...)
 
       end
 
-      if Confetti.spellId and ConfettiVariables.SREnabled then
+      if Confetti.spellId then
         if (sourceGUID == Confetti.sourceGUID and destGUID == Confetti.sourceGUID) and spellId == Confetti.spellId then
 
           ConfettiSR:Hide();
           _, _, icon ,_  = GetSpellInfo(spellId);
-
           ConfettiSRIcon:SetTexture(icon);
           ConfettiSRText:SetText("Reflect: "..spellName.." for "..Confetti.FormatNumber(amount)..".");
           ConfettiSR:Show();
-
-          --C_Timer.After(2.5, function() ConfettiSR:Hide() end);
 
           Confetti.TotalDmg = Confetti.TotalDmg + amount
           Confetti.spellId = nil

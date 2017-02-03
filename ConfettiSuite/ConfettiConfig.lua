@@ -4,7 +4,6 @@ if not ( classIndex == 1 ) then
   return;
 end
 
-
 ConfettiCfg = {}
 
 ConfettiCfg.IsConfigLoaded = false
@@ -34,6 +33,7 @@ ConfettiCfg.VariablesLoaded = function()
 end
 
 ConfettiCfg.ConfigChange = function()
+
   if not ConfettiCfg.IsConfigLoaded then
     return;
   end
@@ -44,7 +44,11 @@ ConfettiCfg.ConfigChange = function()
     ConfettiFrame:Hide();
   end
 
-  ConfettiConfigWindowThreshold:SetNumber(ConfettiVariables.Threshold)
+  if ConfettiVariables.SREnabled == true then
+    ConfettiSRFrame:Show();
+  else
+    ConfettiSRFrame:Hide();
+  end
 
 end
 
@@ -63,9 +67,9 @@ ConfettiCfg.VaiablesSetToDefault = function()
 	ConfettiCfg.ConfigChange();
 end
 
-ConfettiCfg.ConfigThreshold = function(text)
-  ConfettiVariables.Threshold = text:GetNumber();
-  print(Confetti.AddonString.."Confetti will be shown for SS hits over "..Confetti.FormatNumber(text:GetNumber()))
+ConfettiCfg.ConfigThreshold = function(self)
+  ConfettiVariables.Threshold = self:GetNumber();
+  print(Confetti.AddonString.."Confetti will be shown for SS hits over "..Confetti.FormatNumber(ConfettiVariables.Threshold))
   ConfettiCfg.ConfigChange();
 end
 
@@ -91,7 +95,7 @@ ConfettiCfg.ConfigOnClick = function(button)
     if button:GetChecked() then
       print(Confetti.AddonString.."The Spell Reflect Module is Enabled.")
     else
-      print(Confetti.AddonString.."The Spell Reflect Module is Disabled. Sad.")
+      print(Confetti.AddonString.."The Spell Reflect Module is Disabled.")
     end
 
   elseif ( button:GetName() == (button:GetParent():GetName().."SBEnabledButton" ) ) then
@@ -100,20 +104,20 @@ ConfettiCfg.ConfigOnClick = function(button)
     if button:GetChecked() then
       print(Confetti.AddonString.."The Shield Block Module is Enabled.")
     else
-      print(Confetti.AddonString.."The Shield Block Module is Disabled. Sad.")
+      print(Confetti.AddonString.."The Shield Block Module is Disabled.")
     end
 
   end
   ConfettiCfg.ConfigChange();
 end
 
-ConfettiCfgConfigOnShow = function(self)
+ConfettiCfg.ConfigOnShow = function(self)
 	if ( not ConfettiCfg.IsConfigLoaded ) then
 		return;
 	end
   print(Confetti.AddonString.."Config Loaded")
-  ConfettiConfigWindowEnabledButton:SetChecked(ConfettiVariables.on);
-  ConfettiConfigWindowSREnabledButton:SetChecked(ConfettiVariables.SREnabled);
-  ConfettiConfigWindowSBEnabledButton:SetChecked(ConfettiVariables.SBEnabled);
-  ConfettiConfigWindowThreshold:SetNumber(ConfettiVariables.Threshold);
+  getglobal(self:GetName().."EnabledButton"):SetChecked(ConfettiVariables.on);
+  getglobal(self:GetName().."SREnabledButton"):SetChecked(ConfettiVariables.SREnabled);
+  getglobal(self:GetName().."SBEnabledButton"):SetChecked(ConfettiVariables.SBEnabled);
+  getglobal(self:GetName().."Threshold"):SetNumber(ConfettiVariables.Threshold);
 end

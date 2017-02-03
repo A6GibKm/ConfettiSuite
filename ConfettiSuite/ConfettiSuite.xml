@@ -17,7 +17,7 @@
     <Layers>
 
       <Layer level="BACKGROUND">
-        <Texture file="Interface\AddOns\ConfettiSuite\confetti.tga" >
+        <Texture file="Interface\AddOns\ConfettiSuite\Media\confetti.tga" >
           <Anchors>
             <Anchor point="TOP" relativePoint="TOP"
             relativeTo="UIParent"/>
@@ -40,11 +40,12 @@
 
     <Scripts>
       <OnShow function="ConfettiOnShow"/>
+      <OnUpdate function="ConfettiOnUpdate"/>
     </Scripts>
 
   </Frame>
 
-  <Frame name="ConfettiSR" parent="UIParent" hidden="true" frameStrata="BACKGROUND">
+  <Frame name="ConfettiSR" parent="ConfettiSRFrame" hidden="true" frameStrata="BACKGROUND">
 
     <Size>
       <AbsDimension x="5000" y="400"/>
@@ -83,6 +84,7 @@
 
     <Scripts>
       <OnShow function="ConfettiOnShow"/>
+      <OnUpdate function="ConfettiOnUpdate"/>
     </Scripts>
 
   </Frame>

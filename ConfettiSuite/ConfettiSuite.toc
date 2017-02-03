@@ -7,7 +7,7 @@
 
 Confetti.lua
 ConfettiConfig.lua
-Airhorn.mp3
-Confetti.tga
+Media\Airhorn.mp3
+Media\Confetti.tga
 ConfettiSuite.xml
 ConfettiConfig.xml

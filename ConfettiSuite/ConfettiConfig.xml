@@ -1,6 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
-  <!-- <Script file="ConfettiConfig.lua"/> -->
   <Frame name="ConfettiConfigWindow" toplevel="true" parent="UIParent" frameStrata="DIALOG" hidden="true" enableMouse="true">
 
     <Size><AbsDimension x="300" y="340"/></Size>
@@ -24,7 +23,8 @@
           </Anchor>
         </Anchors>
         <Scripts>
-          <OnClick> ConfettiConfigWindow:Hide(); </OnClick>
+          <!-- <OnClick> ConfettiConfigWindow:Hide(); </OnClick> -->
+          <OnClick> self:GetParent():Hide(); </OnClick>
         </Scripts>
       </Button>
 
@@ -48,7 +48,8 @@
         </Anchors>
         <Scripts>
           <OnLoad> getglobal(self:GetName().."Text"):SetText("Confetti Enabled"); </OnLoad>
-          <OnClick> ConfettiCfg.ConfigOnClick(getglobal(self:GetName())); </OnClick>
+          <!-- <OnClick> ConfettiCfg.ConfigOnClick(getglobal(self:GetName())); </OnClick> -->
+          <OnClick> ConfettiCfg.ConfigOnClick(self); </OnClick>
         </Scripts>
       </CheckButton>
 
@@ -60,7 +61,7 @@
         </Anchors>
         <Scripts>
           <OnLoad> getglobal(self:GetName().."Text"):SetText("Spell Reflect module Enabled"); </OnLoad>
-          <OnClick> ConfettiCfg.ConfigOnClick(getglobal(self:GetName())); </OnClick>
+          <OnClick> ConfettiCfg.ConfigOnClick(self); </OnClick>
         </Scripts>
       </CheckButton>
 
@@ -72,7 +73,7 @@
         </Anchors>
         <Scripts>
           <OnLoad> getglobal(self:GetName().."Text"):SetText("Shield Block module Enabled");  </OnLoad>
-          <OnClick> ConfettiCfg.ConfigOnClick(getglobal(self:GetName())); </OnClick>
+          <OnClick> ConfettiCfg.ConfigOnClick(self); </OnClick>
         </Scripts>
       </CheckButton>
 
@@ -87,11 +88,11 @@
         <Scripts>
           <OnEscapePressed>
             self:ClearFocus();
-            ConfettiCfg.ConfigThreshold(getglobal(self:GetName()));
+            ConfettiCfg.ConfigThreshold(self);
           </OnEscapePressed>
           <OnEnterPressed>
             self:ClearFocus();
-            ConfettiCfg.ConfigThreshold(getglobal(self:GetName()));
+            ConfettiCfg.ConfigThreshold(self);
           </OnEnterPressed>
           <OnLoad>
             self:SetAutoFocus(false);
@@ -116,7 +117,7 @@
   </Layers>
 
     <Scripts>
-      <OnShow function= "ConfettiCfgConfigOnShow" />
+      <OnShow> ConfettiCfg.ConfigOnShow(self); </OnShow>
     </Scripts>
 
   </Frame>
