@@ -6,7 +6,7 @@ The Confetti Suite shows tasteful confetti when a shield slams hits for over a m
 
 ### New aditions
 
-Added an option to show % of meele hits blocked after combat, due to problem with the combat log API this number will be around 0.5-1% lower than the number on warcraftlogs. Have in mind that warcraft logs also makes mistakes and sometimes it shows more hits that the ones that actually existed (hits not shown in the in-game combat log).
+Added an option to show % of meele hits blocked after combat, due to problem with the combat log API this number will be strictly lower than the number on warcraftlogs (around 0.5-1% for a 6 min fight). Have in mind that warcraft logs also makes mistakes and sometimes it shows more hits that the ones that actually existed (hits not shown in the in-game combat log).
 
 Added an option to show spell reflected abilities.
 
