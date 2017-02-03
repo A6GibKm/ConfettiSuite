@@ -6,7 +6,7 @@ The Confetti Suite shows tasteful confetti when a shield slams hits for over a m
 
 ### New aditions
 
-Added an option to show % of meele hits blocked after combat, this number does not coincide with the one on warcraft logs since it does not take melee hits that were completely absorbed. afaik there is no apl to distinguish an absorbed hit and a absorved+blocked hit, the advance combatlog comes with some APL that are not avaible in-game. 
+Added an option to show % of meele hits blocked after combat, this number does not coincide with the one on warcraft logs since it does not take into account melee hits that were completely absorbed. afaik there is no apl to distinguish an absorbed hit and a absorved+blocked hit, the advance combatlog comes with some APL that are not avaible in-game which may be able to do so. 
 
 Added an option to show spell reflected abilities.
 
