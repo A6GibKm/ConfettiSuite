@@ -1,6 +1,6 @@
 # The Confetti Suite
 
-The Ultimate confetti suite for prot warriors.
+This World of Warcraft addon provides the Ultimate confetti suite for protection warriors.
 
 The Confetti Suite shows tasteful confetti when a shield slams hits for over a million.
 
