@@ -15,19 +15,13 @@ if not Confetti.Frame then
   Confetti.Frame = CreateFrame("Frame", "Confetti.Frame", UIParent);
 end
 
-function Confetti.FormatNumber(amount,bolean)
+function Confetti.FormatNumber(amount)
 
-  if bolean then
-    local amountBeforeComma = math.floor(amount/ 10^6);
-    local amountAfterComma = math.floor((amount % 10^6)/10^4);
-    return amountBeforeComma.."."..amountAfterComma;
-  end
-
-  local formatted = amount
+  local formatted, k = amount, 0
 
     while true do
       formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2');
-      if (k==0) then
+      if (k == 0) then
         break
       end
     end
@@ -35,14 +29,13 @@ function Confetti.FormatNumber(amount,bolean)
 
 end
 
+function Confetti.Unit(ammount)
+  return "k"
+end
+
 function Confetti.OnShow(self)
-
   self.TimeSinceLastUpdate = 0
-
-  if self:GetName() == "ConfettiArt" then
-    PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\Media\\Airhorn.mp3");
-  end
-
+  PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\Media\\Airhorn.mp3");
 end
 
 function Confetti.OnUpdate(self, elapsed)
@@ -60,71 +53,29 @@ function Confetti.OnEvent(self, event, ...)
 
   if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 
-    local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
+    local timeStamp, Type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
 
-    if type == "SPELL_DAMAGE" then
+    if Type == "SPELL_DAMAGE" then
 
-      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount = ...
+      local timeStamp, Type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount = ...
 
-      --Show confetti
-      if (sourceName == UnitName("player") and spellName=="Shield Slam") and amount >=  ConfettiVariables.Threshold then
+      if (sourceName == UnitName("player") and spellName == "Shield Slam") and amount >=  ConfettiVariables.Threshold then
 
-        ConfettiArt:Hide();
-        amount = Confetti.FormatNumber(amount,true);
-        ConfettiText:SetText("Shield Slam Hit for "..amount.." m !");
-        ConfettiArt:Show();
+        Confetti.Frame:Hide();
+        amount = Confetti.FormatNumber(amount);
+        ConfettiText:SetText("Shield Slam Hit for "..amount..""..Confetti.Unit.." !");
+        Confetti.Frame:Show();
 
-      end
-
-    elseif type == "SWING_MISSED" then
-      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, missType, isOffHand, amountMissed = ...
-
-      if missType == "ABSORB" then
-        Confetti.TotalHits = Confetti.TotalHits + 1
-        if UnitBuff("player", "Shield Block") or UnitBuff("player", "Neltharion's Fury") then
-          Confetti.Blocked = Confetti.Blocked + 1
-        end
-      end
-
-    elseif type == "SWING_DAMAGE" and destName == UnitName("player") then
-
-      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, amount, _, school, _, blocked, absorbed, critical, glancing, crushing, isOffHand = ...
-
-      if Confetti.TotalHits then
-        Confetti.TotalHits = Confetti.TotalHits + 1
-
-        if blocked then
-          Confetti.Blocked = Confetti.Blocked + 1
-        end
-
-      end
-
-    end
-
-  elseif event == "PLAYER_REGEN_DISABLED" then
-
-    Confetti.TotalDmg = 0
-    Confetti.Blocked = 0
-    Confetti.TotalHits = 0
-
-  elseif event == "PLAYER_REGEN_ENABLED" then
-
-    if (Confetti.Blocked and Confetti.TotalHits) then
-      if Confetti.TotalHits > 1 and ConfettiVariables.SBEnabled then
-        local blockPercent = math.floor(1000 * Confetti.Blocked/ Confetti.TotalHits)/10;
-        print(Confetti.AddonString.."Blocked "..blockPercent.."% of melee hits.");
       end
     end
 
-  elseif ( event == "VARIABLES_LOADED" ) then
-    ConfettiConfig.VariablesLoaded();
+  elseif event == "VARIABLES_LOADED" then
+      Confetti.configInitialize();
   end
 
 end
 
 Confetti.Frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-Confetti.Frame:RegisterEvent("PLAYER_REGEN_ENABLED");
-Confetti.Frame:RegisterEvent("PLAYER_REGEN_DISABLED");
 Confetti.Frame:RegisterEvent("VARIABLES_LOADED");
 
 Confetti.Frame:SetScript("OnEvent", Confetti.OnEvent);

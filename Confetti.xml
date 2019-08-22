@@ -1,11 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-
-  <Frame name="ConfettiArt" parent="ConfettiFrame" hidden="true" frameStrata="BACKGROUND">
-
+  <Frame name="Confetti.Frame" hidden="true" frameStrata="BACKGROUND">
     <Size>
       <RelDimension x="0.9" y="0.9"/>
     </Size>
-
     <Anchors>
       <Anchor point="CENTER">
         <Offset>
@@ -13,9 +10,7 @@
         </Offset>
       </Anchor>
     </Anchors>
-
     <Layers>
-
       <Layer level="BACKGROUND">
         <Texture file="Interface\AddOns\ConfettiSuite\Media\confetti.tga" >
           <Anchors>
@@ -24,20 +19,15 @@
           </Anchors>
         </Texture>
       </Layer>
-
       <Layer level="BORDER">
         <FontString name="ConfettiText" outline="NORMAL" font="Fonts\FRIZQT__.TTF">
           <Anchors>
             <Anchor point="CENTER" relativePoint="CENTER" relativeTo="UIParent"/>
           </Anchors>
-
           <Color r="1" g="1" b="0" a="1"/>
           <FontHeight val="38"/>
         </FontString>
       </Layer>
-
     </Layers>
-
   </Frame>
-
 </Ui>
