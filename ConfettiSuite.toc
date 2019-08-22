@@ -1,0 +1,14 @@
+## Interface: 80200
+## Title: The Confetti Suite
+## Author: Deathwish
+## Version: 0.1
+## Notes: Highlights when a Shield Slam hits for more than 1.000.000 with tasteful confetti
+## SavedVariables: ConfettiVariables
+
+Confetti.lua
+Confetti.xml
+
+ConfettiConfig.lua
+
+Media\Airhorn.mp3
+Media\Confetti.tga
