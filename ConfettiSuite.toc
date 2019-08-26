@@ -7,8 +7,5 @@
 
 Confetti.lua
 Confetti.xml
-
 ConfettiConfig.lua
-
-Media\Airhorn.mp3
 Media\Confetti.tga

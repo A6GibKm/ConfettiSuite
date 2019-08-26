@@ -5,19 +5,14 @@ if not (classIndex == 1) then
   return;
 end
 
-if not Confetti then
-  Confetti = {}
+if not ConfettiFrame then
+  local ConfettiFrame = CreateFrame("Frame", "ConfettiFrame", UIParent);
 end
 
-Confetti.AddonString = "|cff33ff99Confetti Suite: |r"
+local function FormatNumber(amount)
 
-if not Confetti.Frame then
-  Confetti.Frame = CreateFrame("Frame", "Confetti.Frame", UIParent);
-end
-
-function Confetti.FormatNumber(amount)
-
-  local formatted, k = amount, 0
+  local formatted = amount
+  local k
 
     while true do
       formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2');
@@ -29,16 +24,17 @@ function Confetti.FormatNumber(amount)
 
 end
 
-function Confetti.Unit(ammount)
-  return "k"
+local function Unit(amount)
+  -- TODO improve this
+  return "k";
 end
 
-function Confetti.OnShow(self)
+local function OnShow(self)
   self.TimeSinceLastUpdate = 0
-  PlaySoundFile("Interface\\AddOns\\ConfettiSuite\\Media\\Airhorn.mp3");
+  PlaySound(15881)
 end
 
-function Confetti.OnUpdate(self, elapsed)
+local function OnUpdate(self, elapsed)
 
   self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 
@@ -49,35 +45,30 @@ function Confetti.OnUpdate(self, elapsed)
 
 end
 
-function Confetti.OnEvent(self, event, ...)
+local function OnEvent(self, event, ...)
 
   if event == "COMBAT_LOG_EVENT_UNFILTERED" then
 
-    local timeStamp, Type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags = ...
+    local type = select(3, ...)
 
-    if Type == "SPELL_DAMAGE" then
+    if type == "SPELL_DAMAGE" then
 
-      local timeStamp, Type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount = ...
+      local timeStamp, type, hideCaster, sourceGUID, sourceName, sourceFlags, sourceRaidFlags, destGUID, destName, destFlags, destRaidFlags, spellId, spellName, spellSchool, amount = ...
 
       if (sourceName == UnitName("player") and spellName == "Shield Slam") and amount >=  ConfettiVariables.Threshold then
 
-        Confetti.Frame:Hide();
-        amount = Confetti.FormatNumber(amount);
-        ConfettiText:SetText("Shield Slam Hit for "..amount..""..Confetti.Unit.." !");
-        Confetti.Frame:Show();
+        ConfettiFrame:Hide();
+        amount = FormatNumber(amount);
+        ConfettiText:SetText("Shield Slam Hit for "..amount..""..Unit(amount).." !");
+        ConfettiFrame:Show();
 
       end
     end
-
-  elseif event == "VARIABLES_LOADED" then
-      Confetti.configInitialize();
   end
-
 end
 
-Confetti.Frame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
-Confetti.Frame:RegisterEvent("VARIABLES_LOADED");
+ConfettiFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
-Confetti.Frame:SetScript("OnEvent", Confetti.OnEvent);
-Confetti.Frame:SetScript("OnShow", Confetti.OnShow);
-Confetti.Frame:SetScript("OnEvent", Confetti.OnUpdate);
+ConfettiFrame:SetScript("OnEvent", OnEvent);
+ConfettiFrame:SetScript("OnShow", OnShow);
+ConfettiFrame:SetScript("OnEvent", OnUpdate);

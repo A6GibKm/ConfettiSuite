@@ -4,24 +4,44 @@ if not (classIndex == 1) then
   return;
 end
 
-if not Confetti then
-  Confetti = {}
+local AddonString = "|cff33ff99Confetti Suite: |r";
+
+local DefaultThreshold = 10^6
+
+if not ConfettiConfigFrame then
+  local ConfettiConfigFrame = CreateFrame("Frame", "ConfettiConfigFrame", UIParent)
 end
 
 SLASH_CONF1 = "/confetti";
 SLASH_CONF2 = "/cft";
 
-SlashCmdList["CONF"] = function(threshold)
-  ConfettiConfig.Initialize();
-  if threshold > 0 then
-    ConfettiVariables.threshold = threshold;
+local function ConfHandler(threshold, _)
+  if type(threshold) == "number" then
+    if threshold > 0 then
+      ConfettiVariables.threshold = threshold;
+    end
+  elseif type(threshold) == "nil" then
+    print(AddonString, "Type /confetti N to set the threshold to N.'")
+  else
+    print(AddonString, threshold, "is not a number.")
   end
 end
 
-function Confetti.configInitialize()
+SlashCmdList["CONF"] = ConfHandler;
+
+local function ConfigInit()
   if (not ConfettiVariables) then
     ConfettiVariables = {
-      ["threshold"] = 10^6,
+      ["threshold"] = DefaultThreshold
     };
   end
 end
+
+local function OnEvent(self, event)
+  if event == "VARIABLES_LOADED" then
+      ConfigInit();
+  end
+end
+
+ConfettiConfigFrame:RegisterEvent("VARIABLES_LOADED");
+ConfettiConfigFrame:SetScript("OnEvent", OnEvent);
