@@ -7,7 +7,10 @@ end
 
 if not ConfettiFrame then
   local ConfettiFrame = CreateFrame("Frame", "ConfettiFrame", UIParent);
+  ConfettiFrame.TimeSinceLastUpdate = 0
 end
+
+local UpdateInterval = 1.0
 
 local function FormatNumber(amount)
 
@@ -35,10 +38,9 @@ local function OnShow(self)
 end
 
 local function OnUpdate(self, elapsed)
-
   self.TimeSinceLastUpdate = self.TimeSinceLastUpdate + elapsed;
 
-  if (self.TimeSinceLastUpdate > 2.5) then
+  if (self.TimeSinceLastUpdate > UpdateInterval) then
     self:Hide();
     self.TimeSinceLastUpdate = 0;
   end
@@ -71,4 +73,4 @@ ConfettiFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED");
 
 ConfettiFrame:SetScript("OnEvent", OnEvent);
 ConfettiFrame:SetScript("OnShow", OnShow);
-ConfettiFrame:SetScript("OnEvent", OnUpdate);
+ConfettiFrame:SetScript("OnUpdate", OnUpdate);

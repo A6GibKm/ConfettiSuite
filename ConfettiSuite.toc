@@ -8,4 +8,3 @@
 Confetti.lua
 Confetti.xml
 ConfettiConfig.lua
-Media\Confetti.tga
